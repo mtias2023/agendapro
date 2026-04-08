@@ -93,12 +93,19 @@ export function Settings() {
     }
   };
 
-  const copyBookingLink = () => {
-    if (bookingLink) {
-      const url = `${window.location.origin}/booking/${bookingLink.token}`;
-      navigator.clipboard.writeText(url);
+    // ✅ FUNCIÓN CORREGIDA
+  const copyBookingLink = async () => {
+    if (!bookingLink?.token) return;
+
+    try {
+      const url = `${window.location.origin}/#/booking/${bookingLink.token}`;
+      await navigator.clipboard.writeText(url);
+
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Error copiando link:', error);
+      alert('No se pudo copiar el link');
     }
   };
 
